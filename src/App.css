@@ -41,6 +41,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-display);
+  margin: 0;
   overflow-x: hidden;
 }
 
@@ -463,6 +464,7 @@ textarea {
 }
 
 .hero__copy {
+  grid-column: 1;
   max-width: 920px;
 }
 
@@ -472,6 +474,7 @@ textarea {
   border: 1px solid var(--line);
   display: grid;
   gap: 1rem;
+  grid-column: 3;
   min-height: 360px;
   padding: clamp(1rem, 2vw, 1.4rem);
 }
@@ -510,6 +513,7 @@ textarea {
 }
 
 .hero__visual {
+  grid-column: 2;
   justify-self: center;
   max-width: 460px;
   transform: translate3d(calc(var(--mx, 0) * 14px), calc(var(--my, 0) * 10px), 0);
@@ -788,6 +792,20 @@ h3 {
   }
   100% {
     transform: translateX(78px);
+  }
+}
+
+@media (max-width: 640px) {
+  @keyframes logoDock {
+    0% {
+      transform: translate(0, 0) scale(0.8);
+    }
+    55% {
+      transform: translate(0, -4vh) scale(0.46);
+    }
+    100% {
+      transform: translate(calc(-50vw + 2.3rem), calc(-50vh + 2.3rem)) scale(0.19);
+    }
   }
 }
 
@@ -1355,6 +1373,29 @@ h3 {
     grid-template-columns: auto 1fr;
   }
 
+  .brand,
+  .nav-actions {
+    z-index: 44;
+  }
+
+  .brand {
+    display: grid;
+    height: 42px;
+    place-items: center;
+    width: 42px;
+  }
+
+  .brand span {
+    display: block;
+    line-height: 1;
+    transform: translateY(0);
+  }
+
+  .nav-actions {
+    align-items: center;
+    min-height: 42px;
+  }
+
   .menu-button {
     align-items: center;
     border: 1px solid var(--line);
@@ -1374,18 +1415,19 @@ h3 {
 
   .navlinks {
     align-content: center;
-    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    background: color-mix(in srgb, var(--bg) 96%, transparent);
     border: 0;
     display: grid;
-    gap: 1.1rem;
+    gap: 0.55rem;
     inset: 0;
     justify-items: center;
-    padding: 0;
+    padding: 5.25rem 1rem 2rem;
     opacity: 0;
     pointer-events: none;
     position: fixed;
     transform: translateY(-16px);
     transition: opacity 280ms ease, transform 280ms var(--ease-out);
+    z-index: 40;
   }
 
   .navlinks--open {
@@ -1395,7 +1437,11 @@ h3 {
   }
 
   .navlinks a {
-    font-size: clamp(1.5rem, 8vw, 4rem);
+    border-top: 1px solid var(--line);
+    font-size: clamp(1.35rem, 7vw, 2.6rem);
+    padding: 0.72rem 0;
+    text-align: center;
+    width: min(78vw, 360px);
   }
 
   .nav-actions {
@@ -1427,19 +1473,49 @@ h3 {
     grid-template-columns: 1fr;
   }
 
+  .hero {
+    align-items: start;
+    gap: 1.1rem;
+    min-height: auto;
+    padding-bottom: 3rem;
+    padding-top: 6.75rem;
+  }
+
+  .hero::before {
+    top: 5.55rem;
+  }
+
   .hero__visual {
+    grid-column: 1;
     justify-self: center;
     max-width: min(420px, 100%);
     order: 2;
   }
 
   .hero__copy {
+    grid-column: 1;
     order: 1;
   }
 
   .hero__side {
+    gap: 0.75rem;
+    grid-column: 1;
     min-height: auto;
     order: 3;
+    padding: 1rem;
+  }
+
+  .hero__side dl {
+    gap: 0.7rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero__side div {
+    padding-top: 0.65rem;
+  }
+
+  .hero__side dd {
+    font-size: 0.92rem;
   }
 
   .hero__scroll-cue {
@@ -1498,6 +1574,14 @@ h3 {
 @media (max-width: 640px) {
   .section {
     padding-inline: 1rem;
+  }
+
+  .hero {
+    padding-top: 6.25rem;
+  }
+
+  .hero__side dl {
+    grid-template-columns: 1fr;
   }
 
   .project-modal dl,

@@ -308,7 +308,6 @@ function Home() {
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
   const heroRef = useRef(null);
   const snapRef = useRef(false);
-  const touchStartRef = useRef(null);
 
   function updateParallax(event) {
     if (prefersReducedMotion()) return;
@@ -338,13 +337,15 @@ function Home() {
 
       const scrollY = window.scrollY;
       const overviewTop = overview.offsetTop;
-      const heroRange = Math.max(overviewTop, window.innerHeight);
+      const viewportBottom = scrollY + window.innerHeight;
+      const heroEndReached = viewportBottom >= overviewTop - 28;
+      const nearOverviewTop = scrollY >= overviewTop - 80 && scrollY < overviewTop + window.innerHeight * 0.34;
 
-      if (delta > 0 && scrollY < heroRange * 0.72) {
+      if (delta > 0 && heroEndReached && scrollY < overviewTop - 8) {
         return snapToSection('overview');
       }
 
-      if (delta < 0 && scrollY > overviewTop - 80 && scrollY < overviewTop + window.innerHeight * 0.42) {
+      if (delta < 0 && nearOverviewTop) {
         return snapToSection('home');
       }
 
@@ -356,12 +357,13 @@ function Home() {
     };
 
     const handleTouchStart = (event) => {
-      touchStartRef.current = event.touches[0]?.clientY ?? null;
+      heroRef.current.dataset.touchStart = String(event.touches[0]?.clientY ?? 0);
     };
 
     const handleTouchMove = (event) => {
-      if (touchStartRef.current === null) return;
-      const delta = touchStartRef.current - (event.touches[0]?.clientY ?? touchStartRef.current);
+      const start = Number(heroRef.current?.dataset.touchStart ?? 0);
+      const current = event.touches[0]?.clientY ?? start;
+      const delta = start - current;
       if (handleSnap(delta)) event.preventDefault();
     };
 
